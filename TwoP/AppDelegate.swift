@@ -10,13 +10,14 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate
+{
 
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
+    {
         return true
     }
 
@@ -44,8 +45,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
 
-    // MARK: - Core Data stack
+// MARK: - Core Data stack
+    
 
+    
+    
+// HNS - below was the original code that Xcode brought in.
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -73,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
 
-    // MARK: - Core Data Saving support
+// MARK: - Core Data Saving support
 
     func saveContext () {
         let context = persistentContainer.viewContext
@@ -89,5 +94,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-}
+    
+    
+    
+}//end of class
+
 
