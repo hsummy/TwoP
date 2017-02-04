@@ -76,7 +76,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate
         }
         if textField == corePasswordTextField
         {
-            return validatePasswordTextField()
+            let rc = validatePasswordTextField()
+            signInButtonTapped(nil)
+            return rc
         
         }
         return true
@@ -136,7 +138,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate
     }
 
 //MARK: IBAction - Signin validation, storage, and segue
-    @IBAction func signInButtonTapped(_ sender: UIButton)
+    @IBAction func signInButtonTapped(_ sender: UIButton?)
     {
         if validateTextFields()
         {

@@ -66,7 +66,7 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
     func textFieldDidBeginEditing(_ textField: UITextField)
     {
-        <#code#>
+        
     }
 
     override func didReceiveMemoryWarning()
