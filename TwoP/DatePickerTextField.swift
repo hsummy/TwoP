@@ -44,7 +44,8 @@ class DatePickerTextField: UITextField {
     func sharedInit() {
         style = .time
         inputView = picker
-        addTarget(self, action: #selector(datePickerDateDidChange(picker:)), for: .valueChanged)
+        picker.backgroundColor = UIColor.white
+        picker.addTarget(self, action: #selector(datePickerDateDidChange(picker:)), for: .valueChanged)
     }
     
     @objc private func datePickerDateDidChange(picker: UIDatePicker) {
