@@ -22,50 +22,8 @@ class CoreDataManager: NSObject
     //HNS - referring the value of persistentContainer in AppDelegate, then accessing viewContext
     return appDelegate.persistentContainer.viewContext
     }
-        
-    //HNS - storing object in our core data. then Calling it into BathroomDetailViewController in viewDidLoad.
-    //https://www.youtube.com/watch?v=zZJpsszfTHM
-    //https://www.raywenderlich.com/145809/getting-started-core-data-tutorial
-    func StoreObject()
-{
-    let context = getContext()
-    //HNS - my Entity is Bathroom (class).
-    //let entity = NSEntityDescription.entity(forEntityName: "Bathroom", in: context)
-    //let entity = NSEntityDescription.insertNewObject(forEntityName: "Bathroom", into: context)
-    //HNS - my managed objects are the attributes associated with Bathroom. Replaced managedUserObject with user.
-    let aUser = User(context: context)
-    let aBathroom = Bathroom(context: context)
-    //HNS - replaced managedUserObject.setValue with user.
-    aUser.email = "email"
-    aUser.password = "password"
-
     
-    //HNS - below hardcoded items wil be replaced with managedBathroomObject.setValue(gender, forKeyPath "gender") etc....
-    aBathroom.bathroomDescription = "The Iron Yard"
-    //above replaced below.
-   //managedBathroomObject.setValue("The Iron Yard", forKey: "bathroomDescription")
-    aBathroom.bathroomDescription = "The Iron Yard"
-    aBathroom.gender = "All"
-    aBathroom.bathroomType = "Employees Only"
-    aBathroom.handicapAccess = true
-    //aBathroom.openingTime = Date
-    //aBathroom.closingTime = Date
-    aBathroom.flushRating = 4
-    //aBathroom.dateRated = Date
-    aBathroom.safe = true
-    aBathroom.extraNotes = "Clean most of the time. Some mishapes from time to time."
-    
-    do{
-        try context.save()
-        //HNS - add later managedBathroomObjects.append(bathroom) after you add var managedBathroomObjects: [NSManagedObject] = []?
-        print("Data saved!")
-    } catch {
-        print(error.localizedDescription)        
-    }
-    
-}//end of StoreObject class
-    
-    func FetchObject()
+    func fetchObject()
     {
     let context = getContext()
         
@@ -78,29 +36,107 @@ class CoreDataManager: NSObject
             
             if results.count > 0
             {
-                for result in results as! [NSManagedObject]
+                for result in results as! [Bathroom]
                 {
-                    if let bathroomDescription = result.value(forKey: "bathroomDescription") as? String
+                    if let bathroomAddress = result.bathroomAddress
                     {
-                       print(bathroomDescription)
+                       print(bathroomAddress)
                     }
-                    if let gender = result.value(forKey: "gender") as? String
+                    if let bathroomDescription = result.bathroomDescription
                     {
-                        print(gender)
+                        print(bathroomDescription)
+
                     }
                     if let bathroomType = result.value(forKey: "bathroomType") as? String
                     {
                         print(bathroomType)
                     }
+                    if let changingTable = result.value(forKey: "changingTable") as? Bool
+                    {
+                        print(changingTable)
+                    }
+                    
+                    if let closingTime = result.value(forKey: "closingTime") as? Date
+                    {
+                        print(closingTime)
+                    }
+                    if let dateRated = result.value(forKey: "dateRated") as? Date
+                    {
+                        print(dateRated)
+                    }
                     if let extraNotes = result.value(forKey: "extraNotes") as? String
                     {
                         print(extraNotes)
                     }
-                    if let flushRating = result.value(forKey: "flushRating") as? String
+                    if let flushRating = result.value(forKey: "flushRating") as? Int16
                     {
                         print(flushRating)
                     }
 
+                    if let gender = result.value(forKey: "gender") as? String
+                    {
+                        print(gender)
+                    }
+                    if let handicapAccess = result.value(forKey: "handicapAccess") as? Bool
+                    {
+                        print(handicapAccess)
+                    }
+                    if let latitude = result.value(forKey: "latitude") as? Double
+                    {
+                        print(latitude)
+                    }
+                    if let longitude = result.value(forKey: "longitude") as? Double
+                    {
+                        print(longitude)
+                    }
+                    if let openingTime = result.value(forKey: "openingTime") as? Date
+                    {
+                        print(openingTime)
+                    }
+                   // if let placemark = result.value(forKey: "placemark") as? CATransformLayer
+                   // {
+                   //     print(placemark)
+                    //}
+                    if let safe = result.value(forKey: "safe") as? Bool
+                    {
+                        print(safe)
+                    }
+                    if let stallCount = result.value(forKey: "stallCount") as? Int16
+                    {
+                        print(stallCount)
+                    }
+                    if let urinalCount = result.value(forKey: "urinalCount") as? Int16
+                    {
+                        print(urinalCount)
+                    }
+                    if let monday = result.value(forKey: "monday") as? String
+                    {
+                        print(monday)
+                    }
+                    if let tuesday = result.value(forKey: "tuesday") as? String
+                    {
+                        print(tuesday)
+                    }
+                    if let wednesday = result.value(forKey: "wednesday") as? String
+                    {
+                        print(wednesday)
+                    }
+                    if let thursday = result.value(forKey: "thursday") as? String
+                    {
+                        print(thursday)
+                    }
+                    if let friday = result.value(forKey: "friday") as? String
+                    {
+                        print(friday)
+                    }
+                    if let saturday = result.value(forKey: "saturday") as? String
+                    {
+                        print(saturday)
+                    }
+                    if let sunday = result.value(forKey: "sunday") as? String
+                    {
+                        print(sunday)
+                    }
                 }
             }
         }catch{

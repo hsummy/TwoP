@@ -16,10 +16,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
    
 {
     
+    @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     
-    let locationManager = CLLocationManager()
+    var locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
     
+ 
     
     override func viewDidLoad()
     {
@@ -29,10 +32,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         //HNS - best accuracy for user, need permission from user when app in use, and when user is going to bathroom, update. See function below.
         configureLocationManager()
         bathroomDirections()
+        
+        
 
 
         // hard coded bathrooms below
-        let bathroomTIYGeneral = CLLocationCoordinate2D(latitude: 28.5412382, longitude: -81.381044)
+       /* let bathroomTIYGeneral = CLLocationCoordinate2D(latitude: 28.5412382, longitude: -81.381044)
         let bathroomTIYGeneralAnnotation = MKPointAnnotation()
         bathroomTIYGeneralAnnotation.coordinate = bathroomTIYGeneral
         bathroomTIYGeneralAnnotation.title = "2P"
@@ -57,7 +62,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         bathroomCanvsAnnotation.subtitle = "Canvs W"
 
             mapView.showAnnotations([bathroomTIYGeneralAnnotation, bathroomDrPhillipsAnnotation, bathroomCowboysAnnotation, bathroomCanvsAnnotation], animated: true)
-        
+        */
         
         
         
@@ -87,7 +92,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 }//end of viewDidLoad
     
         
-//MARK: perform ModalLoginSegue for LoginViewController to dismiss upon login.
+//MARK: ModalLoginSegue for LoginViewController to dismiss upon login.
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
@@ -96,13 +101,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
            performSegue(withIdentifier: "ModalLoginSegue", sender: self)
         }
     }
+
+
     
 //MARK: Location functions
+    //HNS- asking status and if granted, start acquiring best accuracy.
   func configureLocationManager()
     {
         let status = CLLocationManager.authorizationStatus()
         if status != .denied && status != .restricted
         {
+           locationManager = CLLocationManager()
            locationManager.delegate = self
            locationManager.desiredAccuracy = kCLLocationAccuracyBest
             if status == .notDetermined
@@ -133,10 +142,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
     {
         //HNS - access the most recent location (i.e. last location)
-        let location = locations[0]
+        currentLocation = locations[0]
         
-        //HNS - replace location lat and long for IronYard hard code during Demo. Did that in the Simulator under Debug Custom location.??????????????
-        let userLocation: CLLocationCoordinate2D = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
+        let userLocation: CLLocationCoordinate2D = CLLocationCoordinate2DMake(currentLocation!.coordinate.latitude, currentLocation!.coordinate.longitude)
         
         //HNS - how close we want to track
         let userZoomAccuracy: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
@@ -145,13 +153,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         //HNS - setting the map
         mapView.setRegion(userRegion, animated: true)
         
-        //HNS - research below line to see if i should have it.
+        //HNS - stop updating when not in use.
         self.locationManager.stopUpdatingLocation()
         
-     
         //HNS-below line is same as User Location in Storyboard, but done programmically.
         mapView?.showsUserLocation = true
-        //HNS - should i incorporate....location.floor?????
+        //HNS - getting Lat and Long and coverting to address and displaying it on label below map.
+        CLGeocoder().reverseGeocodeLocation(currentLocation!)
+        {
+        (placemark, error) in
+            if error != nil
+            {
+                print ("There is an error in Geocoding")
+            }
+            else
+            {
+                if let place = placemark?[0]
+                {
+                    if place.location != nil
+                    {
+                    self.addressLabel.text = "\(place.name!) \n \(place.subThoroughfare!) \(place.thoroughfare!) \n \(place.locality!), \(place.administrativeArea!).  \(place.postalCode!)"
+                    }
+                }
+            }
+        }
+
         
         //HNS - add annotation to the popup on the map with information ---------need to add from my custompinannotation class when i am done.
         //pinAnnotation = CustomPin()
@@ -165,7 +191,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
        // mapView.addAnnotation(pinAnnotationView.annotation!)
     
     }
-    //HNS - Annotations - callouts USE IT???????
+    //HNS - Annotations - callouts
     //func mapItem() -> MKMapItem
    // {
     //    let addressDictionary = [String(kABPersonAddressStreetKey): subtitle]
@@ -195,10 +221,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                //                                   reuseIdentifier: identifier)
                // pinView.isEnabled = true
                 //pinView.canShowCallout = true
-               // pinView.animatesDrop = false
-               // pinView.pinTintColor = UIColor(red: 0.32, green: 0.82,
-                //                               blue: 0.4, alpha: 1)
-                //pinView.tintColor = UIColor(white: 0.0, alpha: 0.5)
+
                 
        //         let rightButton = UIButton(type: .detailDisclosure)
        //         rightButton.addTarget(self,
@@ -231,7 +254,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         {
             return nil
         }
-        let identifier = "Pin"
+        let identifier = "2Pi"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
         
         if annotationView == nil
@@ -253,15 +276,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         return annotationView
     }
-    
+    //HNS - !!!come back to this for the call out. i button
     func showBathroomLocationDetails(sender: UIButton)
     {
-        performSegue(withIdentifier: "EditBathroom", sender: sender)
+        performSegue(withIdentifier: "2Pi", sender: sender)
     }
     
     
 //MARK: Map Overlay - directions to X using ploylines
-    //HNS - https://makeapppie.com/2016/05/16/adding-annotations-and-overlays-to-maps/
+    //!!!HNS - https://makeapppie.com/2016/05/16/adding-annotations-and-overlays-to-maps/ - need to finish the 'directions' to the bathroom with black line.
     
     func bathroomDirections()
     {
@@ -290,19 +313,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     
     
-  // override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-  // {
-     //  if segue.identifier == "EditBathroom"
-     //  {
-         //   let navigationController = segue.destination as! UINavigationController
-          //  let controller = navigationController.topViewController as! BathroomDetailsViewController
-          //  controller.managedBathroomObject = managedBathroomObject
-            
-   //        let button = sender as! UIButton
-    //        let location = locations[button.tag]
-    //        controller.locationToEdit = location
-      //  }
-   //}
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+   {
+       if segue.identifier == "TagBathroomSegue"
+       {
+            let navigationController = segue.destination as! UINavigationController
+            let controller = navigationController.topViewController as! BathroomAddedTableViewController
+        controller.bathroomLocationInfo = ["latitude": "\(currentLocation!.coordinate.latitude)", "longitude": "\(currentLocation!.coordinate.longitude)","address": addressLabel.text!]
+        }
+   }
 
 
  
@@ -336,46 +355,35 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return annotationView
     }
  */
-   /*
-     //HNS - reverse GeoCoding (changing lat/long into actual address) - if i have time!!!!!!!!
-     func configureReverseLocation(_ manager: CLLocationManager, didUpdateLocations reverseLatLongs: [CLLocation])
-     {
-     let reverseLatLong = reverseLatLongs[0]
-     CLGeocoder().reverseGeocodeLocation(reverseLatLong)
-     {
-     (placemark, error) in
-     if error != nil
-     {
-     print ("There is an error in geocoding")
-     } else {
-     //HNS - the most recent one (first element)
-     if let place = placemark?[0]
-     {
-     if let catchSubthoroughfareError = place.subThoroughfare
-     {
-     place.name
-     place.thoroughfare
-     place.subThoroughfare
-     place.locality
-     place.administrativeArea
-     place.postalCode
+   
+    
      
-     //"\(place.name!) \n \(place.thoroughfare!) \n \(place.subThoroughfare!) \n (place.locality!)(,)(place.administrativeArea!) ( ) (place.postalCode!)"
-     }
-     }
-     }
-     }
-     }
-       */
+       
     
     
 
     
 //MARK: IBActions
+    //HNS - tag button will 'pin' the bathroom and open the Tag Bathroom TVC with prepare segue function - Modal.
 
-    @IBAction func tagBathroomButtonTapped(_ sender: UIBarButtonItem) {
+        
+        
+        
+        /*override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+        {
+            if segue.identifier == "TagBathroomSegue"
+            {
+                let navigationController = segue.destination as! UINavigationController
+                let controller = navigationController.topViewController as! BathroomAddedTableViewController
+                
+                controller.coordinate = location!.coordinate
+                controller.placemark = placemark
+                controller.managedObjectContext = managedObjectContext
+            }
+        }
+ 
     }
-    
+    */
     
 
 }//end of MapViewerController class
