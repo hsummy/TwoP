@@ -126,7 +126,8 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         super.viewDidLoad()
         
         toggleDatePicker()
-        
+        bathroomDescriptionText.delegate = self
+        extraNotesText.delegate = self
 
         
     }
@@ -137,6 +138,7 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         bathroomAddressDetail.text = bathroomLocationInfo["address"]
         latitudeDetail.text = bathroomLocationInfo["latitude"]
         longitudeDetail.text = bathroomLocationInfo["longitude"]
+        dateAddedLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .none)
     }
     
 
@@ -269,7 +271,7 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
     @IBAction func didChangeDateAdded(_ sender: UIDatePicker)
     {//convert this dateinto a string.
-        dateAddedLabel.text = DateFormatter.localizedString(from: dateAddedPicker.date, dateStyle: .short, timeStyle: .short)
+        dateAddedLabel.text = DateFormatter.localizedString(from: dateAddedPicker.date, dateStyle: .short, timeStyle: .none)
         
     }
 
@@ -306,19 +308,21 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     {
         
     }
+//MARK: IBActions - When can...
+    @IBAction func daysOfWeekButtons(_ sender: UIButton)
+    {
+        
+        
+    }
     
  //MARK: IBActions - BONUS
     @IBAction func stallStepperValueChanged(_ sender: UIStepper)
     {
         _ = sender.superview
-        
         let countAsInt = Int16(sender.value)
         stallCountAmtLabel.text = "\(countAsInt)"
-        
-
     }
     
-
     @IBAction func urinalStepperValueChanged(_ sender: UIStepper)
     {
         _ = sender.superview
@@ -338,8 +342,6 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
 
 //MARK: IBActions - Notes
-    
-    
     @IBAction func extraNotes(_ sender: UITextField)
     {
         dismiss(animated: true, completion: nil)

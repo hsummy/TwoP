@@ -39,6 +39,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate
 {
     @IBOutlet weak var coreEmailTextField: UITextField!
     @IBOutlet weak var corePasswordTextField: UITextField!
+    @IBOutlet weak var signInButton: UIButton!
     
     //HNS - moved validation Business logic to different class, for cleaner VC code.
     let aLoginValidator = LoginValidator()
@@ -50,6 +51,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate
         corePasswordTextField.delegate = self
         //CoreDataManager.StoreObject()
         //CoreDataManager.FetchObject()
+        setupSignInButton()
     }
 
     override func viewDidAppear(_ animated: Bool)
@@ -70,14 +72,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate
 //MARK: Email and Password - validate each one when Return is tapped
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
-        if textField == coreEmailTextField
+        if textField == coreEmailTextField && validateEmailTextField()
         {
-            return validateEmailTextField()
+            corePasswordTextField.becomeFirstResponder()
         }
-        if textField == corePasswordTextField
+        else if textField == corePasswordTextField
         {
             return validatePasswordTextField()
-        
         }
         return true
     }
@@ -135,8 +136,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate
         dismiss(animated: true, completion: nil)
     }
 
+    func setupSignInButton()
+    {
+        guard let button = signInButton else {
+            return
+        }
+        button.backgroundColor = UIColor.white
+        button.layer.cornerRadius = 4
+    }
+    
+    
 //MARK: IBAction - Signin validation, storage, and segue
-    @IBAction func signInButtonTapped(_ sender: UIButton)
+    @IBAction func signInButtonTapped(_ sender: UIButton?)
     {
         if validateTextFields()
         {
