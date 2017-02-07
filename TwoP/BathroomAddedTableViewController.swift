@@ -74,14 +74,22 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
     @IBOutlet weak var flushRatingSegment: UISegmentedControl!
     
-    
-    
-    
-    
+    @IBOutlet weak var safeLabel: UILabel!
+    @IBOutlet weak var safeSwitchButton: UISwitch!
     
 
-    @IBOutlet weak var MSUN: UIButton!
+    @IBOutlet weak var genderSegmentButton: UISegmentedControl!
+    @IBOutlet weak var bathroomTypeSegmentButton: UISegmentedControl!
+    @IBOutlet weak var handicapAccessSegmentButton: UISegmentedControl!
     
+    
+    @IBOutlet weak var mondayButton: UIButton!
+    @IBOutlet weak var tuesdayButton: UIButton!
+    @IBOutlet weak var wednesdayButton: UIButton!
+    @IBOutlet weak var thursdayButton: UIButton!
+    @IBOutlet weak var fridayButton: UIButton!
+    @IBOutlet weak var saturdayButton: UIButton!
+    @IBOutlet weak var sundayButton: UIButton!
     @IBOutlet weak var openingHourTextField: UILabel!
     @IBOutlet weak var openingHourTimePicker: UIDatePicker!
     @IBOutlet weak var closingHourTextField: UILabel!
@@ -91,9 +99,11 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBOutlet weak var stallStepper: UIStepper!
     @IBOutlet weak var urinalCountAmtLabel: UILabel!
     @IBOutlet weak var urinalStepper: UIStepper!
+
+    @IBOutlet weak var changingTableLabel: UILabel!
+    @IBOutlet weak var changingTableSwitchButton: UISwitch!
     
-    @IBOutlet weak var extraNotesText: UITableViewCell!
-    
+    @IBOutlet weak var extraNotesText: UITextField!
 
     @IBOutlet weak var bathroomAddressDetail: UILabel!
     @IBOutlet weak var latitudeDetail: UILabel!
@@ -101,15 +111,15 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
     var datePickerHidden = false
     
-    
     var bathroomLocationInfo = [String: String]()
+    var bathrooms = [Bathroom]()
     
     /* - ?????for days of the week buttons?
- let calendar = NSCalendar.currentCalendar()
- let date = NSDate()
- let dateComponent =  calendar.components(NSCalendarUnit.CalendarUnitWeekday, fromDate: date)
- let weekday = dateComponent.weekday
- */
+     let calendar = NSCalendar.currentCalendar()
+     let date = NSDate()
+     let dateComponent =  calendar.components(NSCalendarUnit.CalendarUnitWeekday, fromDate: date)
+     let weekday = dateComponent.weekday
+     */
  
     override func viewDidLoad()
     {
@@ -127,7 +137,6 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         bathroomAddressDetail.text = bathroomLocationInfo["address"]
         latitudeDetail.text = bathroomLocationInfo["latitude"]
         longitudeDetail.text = bathroomLocationInfo["longitude"]
-        
     }
     
 
@@ -135,7 +144,6 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
-       
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -144,7 +152,7 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         return false
     }
     
-    // MARK: - Private
+// MARK: - Private
     func getContext() -> NSManagedObjectContext
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -161,37 +169,44 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         //let entity = NSEntityDescription.insertNewObject(forEntityName: "Bathroom", into: context)
         //HNS - my managed objects are the attributes associated with Bathroom
         let aBathroom = Bathroom(context: context)
-        
-        
-        
         //HNS - below hardcoded items wil be replaced with managedBathroomObject.setValue(gender, forKeyPath "gender") etc....
-        // aBathroom.dateRated = picker
-        aBathroom.bathroomDescription = ""
-        aBathroom.flushRating = 4
-        aBathroom.safe = true
-        aBathroom.gender = ""
-        aBathroom.bathroomType = ""
-        aBathroom.handicapAccess = true
-        // aBathroom.openingTime = picker.date
-        // aBathroom.closingTime = picker
-        //managedBathroomObject.setValue("Employees Only", forKey: "bathroomType")
-        aBathroom.stallCount = 0
-        aBathroom.urinalCount = 0
-        aBathroom.changingTable = true
-        aBathroom.extraNotes = "Clean most of the time. Some mishapes from time to time."
+        aBathroom.dateAdded = dateAddedPicker.date as NSDate?
+        aBathroom.bathroomDescription = bathroomDescriptionText?.text
+        aBathroom.flushRating = Int16(flushRatingSegment.selectedSegmentIndex)
+        aBathroom.safe = safeSwitchButton.isOn
+        //HNS - storying gender/bathroomtype/handicap as an INT since i used a segment button, instead of String
+        aBathroom.gender = Int16(genderSegmentButton.selectedSegmentIndex)
+        aBathroom.bathroomType = Int16(bathroomTypeSegmentButton.selectedSegmentIndex)
+        aBathroom.handicapAccess = Int16(handicapAccessSegmentButton.selectedSegmentIndex)
+        aBathroom.monday = mondayButton.isSelected
+        aBathroom.tuesday = tuesdayButton.isSelected
+        aBathroom.wednesday = wednesdayButton.isSelected
+        aBathroom.thursday = thursdayButton.isSelected
+        aBathroom.friday = fridayButton.isSelected
+        aBathroom.saturday = saturdayButton.isSelected
+        aBathroom.sunday = sundayButton.isSelected
+        aBathroom.openingTime = openingHourTimePicker.date as NSDate?
+        aBathroom.closingTime = closingHourTimePicker.date as NSDate?
+        aBathroom.stallCount = Int16(stallStepper.stepValue)
+        aBathroom.urinalCount = Int16(urinalStepper.stepValue)
+        aBathroom.changingTable = changingTableSwitchButton.isOn
+        aBathroom.extraNotes = extraNotesText?.text
         aBathroom.bathroomAddress = bathroomLocationInfo["address"]
         aBathroom.latitude = Double(bathroomLocationInfo["latitude"]!)!
         aBathroom.longitude = Double(bathroomLocationInfo["longitude"]!)!
-        // aBathroom.placemark = ?
+        //aBathroom.placemark = do not need since using lat and long.
         
         do{
             try context.save()
             print("Data saved!")
         } catch {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            abort()
         }
         
-    }
+    }//end of saveBathroomtoCoreData function
 
 
     
@@ -228,7 +243,7 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     {
         datePickerHidden = !datePickerHidden
         
-        // Forces tableview to update itself
+        //HNS - Forces tableview to update itself
         tableView.beginUpdates()
         tableView.endUpdates()
     }
@@ -265,13 +280,17 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         
     }
 
-    
     @IBAction func safeSwitch(_ sender: UISwitch)
     {
-        
+        if safeSwitchButton.isOn == true
+        {
+        safeLabel.text = "Safe!"
+        }else{
+        safeLabel.text = "NOT Safe!"
+        }
     }
     
-   //MARK: IBActions - Who can...
+//MARK: IBActions - Who can...
     @IBAction func genderSegmentButton(_ sender: UISegmentedControl)
     {
         
@@ -292,22 +311,31 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBAction func stallStepperValueChanged(_ sender: UIStepper)
     {
         _ = sender.superview
-        _ = Int16(sender.value)
-        stallCountAmtLabel.text = String(sender.value)
+        
+        let countAsInt = Int16(sender.value)
+        stallCountAmtLabel.text = "\(countAsInt)"
+        
+
     }
     
 
     @IBAction func urinalStepperValueChanged(_ sender: UIStepper)
     {
         _ = sender.superview
-        _ = Int16(sender.value)
-        urinalCountAmtLabel.text = String(sender.value)
+        let countAsInt = Int16(sender.value)
+        urinalCountAmtLabel.text = "\(countAsInt)"
     }
     
     @IBAction func changingTableSwitch(_ sender: UISwitch)
     {
-        
+        if changingTableSwitchButton.isOn == true
+        {
+            changingTableLabel.text = "Changing Table!"
+        }else{
+            changingTableLabel.text = "NO Changing Table!"
+        }
     }
+    
 
 //MARK: IBActions - Notes
     
@@ -317,4 +345,4 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         dismiss(animated: true, completion: nil)
     }
 
-}
+}//end of class BathroomAddedTableViewController
