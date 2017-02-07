@@ -15,7 +15,6 @@
 		E3325DA11E3AB2C500077C3D /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3325DA01E3AB2C500077C3D /* Validator.swift */; };
 		E3325DAA1E3D396100077C3D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FD32B11E36A6030039CD1F /* LoginViewController.swift */; };
 		E3325DBB1E3FFDB500077C3D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3325DBA1E3FFDB500077C3D /* CoreDataManager.swift */; };
-		E35163761E43EF7E00F6447E /* DatePickerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35163751E43EF7E00F6447E /* DatePickerTextField.swift */; };
 		E3FD329D1E36A4660039CD1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FD329C1E36A4660039CD1F /* AppDelegate.swift */; };
 		E3FD32A21E36A4660039CD1F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3FD32A01E36A4660039CD1F /* Main.storyboard */; };
 		E3FD32A51E36A4660039CD1F /* TwoP.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E3FD32A31E36A4660039CD1F /* TwoP.xcdatamodeld */; };
@@ -32,7 +31,6 @@
 		E3325D9E1E3A73E300077C3D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E3325DA01E3AB2C500077C3D /* Validator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		E3325DBA1E3FFDB500077C3D /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		E35163751E43EF7E00F6447E /* DatePickerTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerTextField.swift; sourceTree = "<group>"; };
 		E3FD32991E36A4660039CD1F /* TwoP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3FD329C1E36A4660039CD1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3FD32A11E36A4660039CD1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 				E3FD329C1E36A4660039CD1F /* AppDelegate.swift */,
 				E30170401E393D66006982CD /* AppState.swift */,
 				E3FD32A01E36A4660039CD1F /* Main.storyboard */,
-				E35163751E43EF7E00F6447E /* DatePickerTextField.swift */,
 				E3325DBA1E3FFDB500077C3D /* CoreDataManager.swift */,
 				E3325DB21E3F8A5500077C3D /* Login */,
 				E3325DB11E3F8A2A00077C3D /* Map */,
@@ -160,6 +157,7 @@
 				TargetAttributes = {
 					E3FD32981E36A4660039CD1F = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = KMFZ3YP42N;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
@@ -206,7 +204,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E31E8FB51E42A56600F0AD4F /* BathroomDetailTableViewController.swift in Sources */,
-				E35163761E43EF7E00F6447E /* DatePickerTextField.swift in Sources */,
 				E3325DAA1E3D396100077C3D /* LoginViewController.swift in Sources */,
 				E3325DA11E3AB2C500077C3D /* Validator.swift in Sources */,
 				E3FD32A51E36A4660039CD1F /* TwoP.xcdatamodeld in Sources */,
@@ -335,6 +332,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KMFZ3YP42N;
 				INFOPLIST_FILE = TwoP/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tiy.TwoP;
@@ -348,6 +346,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KMFZ3YP42N;
 				INFOPLIST_FILE = TwoP/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tiy.TwoP;
