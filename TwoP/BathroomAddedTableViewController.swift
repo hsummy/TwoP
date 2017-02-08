@@ -111,6 +111,8 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBOutlet weak var longitudeDetail: UILabel!
     
     var datePickerHidden = false
+    var openTimePickerHidden = false
+    var closeTimePickerHidden = false
     
     var bathroomLocationInfo = [String: AnyObject]()
     //var bathrooms = [Bathroom]()
@@ -241,8 +243,23 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         switch row
         {
         case .dateAddedPickerRow:
-            if datePickerHidden
+            if datePickerHidden{
+            return 0
+            }
+            else
             {
+                return super.tableView(tableView, heightForRowAt: indexPath)
+            }
+        case .openingTimePickerRow:
+            if openTimePickerHidden{
+            return 0
+            }
+            else
+            {
+                return super.tableView(tableView, heightForRowAt: indexPath)
+            }
+        case .closingTimePickerRow:
+            if closeTimePickerHidden{
                 return 0
             }
             else
@@ -324,6 +341,14 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     {
         
         sender.isSelected = !sender.isSelected
+        if sender.isSelected
+        {
+            sender.backgroundColor = UIColor(hue: 29/360, saturation: 58/100, brightness: 44/100, alpha: 1.0)
+        }
+        else
+        {
+            sender.backgroundColor = UIColor(hue: 49/360, saturation: 54/100, brightness: 96/100, alpha: 1.0)
+        }
     }
     
  //MARK: IBActions - BONUS

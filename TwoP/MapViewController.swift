@@ -28,7 +28,6 @@ extension Bathroom: MKAnnotation
         default:
             return ""
         }
-        
     }
     public var subtitle: String?
     {
@@ -45,16 +44,12 @@ extension Bathroom: MKAnnotation
         default:
             return ""
         }
-        
     }
-    
     public var coordinate: CLLocationCoordinate2D
     {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
-    
 }
-
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate
 {
@@ -64,12 +59,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation?
+    var allBathrooms = [Bathroom]()
     
- 
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
         
         //HNS - best accuracy for user, need permission from user when app in use, and when user is going to bathroom, update. See function below.
         configureLocationManager()
@@ -86,6 +80,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         {
            performSegue(withIdentifier: "ModalLoginSegue", sender: self)
         }
+        
+        mapView.removeAnnotations(allBathrooms)
+        allBathrooms.removeAll()
+        
+        let fetchAllBathroomsRequest: NSFetchRequest<Bathroom> = Bathroom.fetchRequest()
+        let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        do {
+            let results = try managedObjectContext.fetch(fetchAllBathroomsRequest)
+            allBathrooms = results
+            mapView.addAnnotations(allBathrooms)
+        } catch
+        {
+            print(error.localizedDescription)
+        }
+        
        // mapView?.delegate = self
        // mapView?.addAnnotations(Bathroom)
         
@@ -105,10 +114,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         {
            locationManager = CLLocationManager()
            locationManager.delegate = self
-           locationManager.desiredAccuracy = kCLLocationAccuracyBest
+           locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             if status == .notDetermined
             {
                 locationManager.requestWhenInUseAuthorization()
+            }
+            else if status == .authorizedWhenInUse
+            {
+                locationManager.startUpdatingLocation()
             }
         }
     }
@@ -143,7 +156,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         //HNS - setting the map
         mapView.setRegion(userRegion, animated: true)
         //HNS - stop updating when not in use.
-        self.locationManager.stopUpdatingLocation()
+        //self.locationManager.stopUpdatingLocation()
         //HNS-below line is same as User Location in Storyboard, but done programmically.
         mapView?.showsUserLocation = true
         //HNS - getting Lat and Long and coverting to address and displaying it on label below map.
@@ -206,6 +219,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             rightButton.addTarget(mapView, action: #selector(showBathroomLocationDetails), for: .touchUpInside)
             annotationBathroomLocationView.rightCalloutAccessoryView = rightButton
             annotationView = annotationBathroomLocationView
+            
+            
+            
+            
         }else{
             annotationView?.annotation = annotation
         }
@@ -233,24 +250,28 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let path = MKPolyline(coordinates: &coordinates, count: coordinates.count)
         mapView.add(path)
     }
-    
+    //HNS - line from user to bathroom selected.
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer
-    {
+    {   /*
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.black
+            polylineRenderer.strokeColor = UIColor(hue: 185/360, saturation: 54/100, brightness: 65/100, alpha: 1.0)
             polylineRenderer.lineWidth = 2
             return polylineRenderer
+            */
+        
+        if !overlay.isKind(of: MKPolyline) {
+            return overlay as! MKOverlayRenderer
+        }
+        
+        let polyline = overlay as! MKPolyline
+        let renderer = MKPolylineRenderer(polyline: polyline)
+        renderer.strokeColor = UIColor.blue
+        renderer.lineWidth = 2
+        return renderer
+    
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    //HNS - bathroom address info on MapView and sending to BathroomAddedTVC
    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
    {
        if segue.identifier == "TagBathroomSegue"
@@ -268,10 +289,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         controller.bathroomLocationInfo = info
         }
    }
-
-
- 
- 
    /*
     func configureBathroomAnnotationView (annotationView: MKAnnotationView)
     {
@@ -301,13 +318,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return annotationView
     }
  */
-   
-    
-     
-       
-    
-    
-
     
 //MARK: IBActions
     //HNS - tag button will 'pin' the bathroom and open the Tag Bathroom TVC with prepare segue function - Modal.
