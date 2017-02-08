@@ -11,6 +11,14 @@ import MapKit
 import CoreLocation
 import CoreData
 
+enum TransportationType: Int
+{
+    case Walk
+    case Bike
+    case Car
+    
+}
+
 extension Bathroom: MKAnnotation
 {
     public var title: String?
@@ -56,6 +64,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var transportationDirectionsSegment: UISegmentedControl!
     
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation?
@@ -215,8 +224,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             annotationBathroomLocationView.canShowCallout = true
             annotationBathroomLocationView.image = UIImage(named: "x")
             
-            let rightButton = UIButton(type: .detailDisclosure)
-            rightButton.addTarget(mapView, action: #selector(showBathroomLocationDetails), for: .touchUpInside)
+            let rightButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
+            //rightButton.addTarget(mapView, action: #selector(getDirections), for: .touchUpInside)
+            rightButton.setTitle("GO", for: .normal)
             annotationBathroomLocationView.rightCalloutAccessoryView = rightButton
             annotationView = annotationBathroomLocationView
             
@@ -251,7 +261,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.add(path)
     }
     //HNS - line from user to bathroom selected.
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer
+    private func mapView(_ mapView: MKMapView, rendererfor overlay: MKOverlay) -> MKOverlayRenderer
     {   /*
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
             polylineRenderer.strokeColor = UIColor(hue: 185/360, saturation: 54/100, brightness: 65/100, alpha: 1.0)
@@ -259,16 +269,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             return polylineRenderer
             */
         
-        if !overlay.isKind(of: MKPolyline) {
-            return overlay as! MKOverlayRenderer
+        if overlay is MKPolyline
+        {
+        let polylineRenderer = MKPolylineRenderer(overlay: overlay)
+        polylineRenderer.strokeColor = UIColor(hue: 185/360, saturation: 54/100, brightness: 65/100, alpha: 1.0)
+        polylineRenderer.lineWidth = 2
+        return polylineRenderer
         }
-        
-        let polyline = overlay as! MKPolyline
-        let renderer = MKPolylineRenderer(polyline: polyline)
-        renderer.strokeColor = UIColor.blue
-        renderer.lineWidth = 2
-        return renderer
-    
+        return overlay as! MKOverlayRenderer
     }
     
     //HNS - bathroom address info on MapView and sending to BathroomAddedTVC
@@ -318,13 +326,28 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return annotationView
     }
  */
-    
+   /*
+    func getDirections(_ sender: UIButton)
+    {
+    currentLocation
+    }
+    */
 //MARK: IBActions
-    //HNS - tag button will 'pin' the bathroom and open the Tag Bathroom TVC with prepare segue function - Modal.
-
-        
-        
-        
+    
+  /*
+    @IBAction func transportationDirectionsSegmentButtons(_ sender: UISegmentedControl)
+    {
+        let transportationType = MKDirectionsRequest(rawValue: transportationDirectionsSegment.selectedSegmentIndex)
+        switch (transportationType!) {
+        case .Walk:
+            MKDirections.transportationType = .Walk
+        case .Bike:
+            .transportationType = TransportationType.Bike
+        case .Car:
+            .transportationType = TransportationType.Car
+        }
+    }
+       */
         /*override func prepare(for segue: UIStoryboardSegue, sender: Any?)
         {
             if segue.identifier == "TagBathroomSegue"

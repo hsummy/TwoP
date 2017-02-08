@@ -138,10 +138,6 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         fridayButton.layer.cornerRadius = 4
         saturdayButton.layer.cornerRadius = 4
         sundayButton.layer.cornerRadius = 4
-        
-        
-
-        
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -234,6 +230,15 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         {
             toggleDatePicker()
         }
+        if row == .openingTimeRow
+        {
+            toggleOpenTimePicker()
+        }
+        if row == .closingTimeRow
+        {
+            toggleCloseTimePicker()
+        }
+        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
@@ -243,23 +248,26 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         switch row
         {
         case .dateAddedPickerRow:
-            if datePickerHidden{
-            return 0
+            if datePickerHidden
+            {
+                return 0
             }
             else
             {
                 return super.tableView(tableView, heightForRowAt: indexPath)
             }
         case .openingTimePickerRow:
-            if openTimePickerHidden{
-            return 0
+            if openTimePickerHidden
+            {
+                return 0
             }
             else
             {
                 return super.tableView(tableView, heightForRowAt: indexPath)
             }
         case .closingTimePickerRow:
-            if closeTimePickerHidden{
+            if closeTimePickerHidden
+            {
                 return 0
             }
             else
@@ -273,6 +281,24 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     func toggleDatePicker()
     {
         datePickerHidden = !datePickerHidden
+        
+        //HNS - Forces tableview to update itself
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func toggleOpenTimePicker()
+    {
+        openTimePickerHidden = !openTimePickerHidden
+        
+        //HNS - Forces tableview to update itself
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func toggleCloseTimePicker()
+    {
+        closeTimePickerHidden = !closeTimePickerHidden
         
         //HNS - Forces tableview to update itself
         tableView.beginUpdates()

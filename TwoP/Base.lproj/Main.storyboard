@@ -119,6 +119,18 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="bar" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="s0J-oh-JPl">
+                                <rect key="frame" x="8" y="84" width="359" height="29"/>
+                                <segments>
+                                    <segment title="Walk"/>
+                                    <segment title="Bike"/>
+                                    <segment title="Car"/>
+                                </segments>
+                                <color key="tintColor" red="0.29951077700000001" green="0.62391817569999997" blue="0.65441107750000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="transportationDirectionsSegmentButtons:" destination="9cw-43-fZi" eventType="valueChanged" id="VcG-0L-l5k"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -126,9 +138,13 @@
                             <constraint firstItem="i0j-WC-Cvz" firstAttribute="leading" secondItem="fCn-b9-v9O" secondAttribute="leading" id="3OF-aP-ttb"/>
                             <constraint firstAttribute="bottom" secondItem="wsu-a9-W7w" secondAttribute="bottom" constant="100" id="9RZ-dL-9Ap"/>
                             <constraint firstAttribute="trailing" secondItem="i0j-WC-Cvz" secondAttribute="trailing" id="KS3-JG-6XT"/>
+                            <constraint firstItem="s0J-oh-JPl" firstAttribute="leading" secondItem="fCn-b9-v9O" secondAttribute="leading" constant="8" id="ULt-CD-LmQ"/>
+                            <constraint firstItem="s0J-oh-JPl" firstAttribute="top" secondItem="mCL-b0-MNL" secondAttribute="bottom" constant="20" id="VEa-DY-bL3"/>
                             <constraint firstItem="wsu-a9-W7w" firstAttribute="top" secondItem="mCL-b0-MNL" secondAttribute="bottom" id="Yqk-qU-VA5"/>
                             <constraint firstItem="wsu-a9-W7w" firstAttribute="leading" secondItem="fCn-b9-v9O" secondAttribute="leading" id="diE-AW-sCW"/>
+                            <constraint firstAttribute="trailing" secondItem="s0J-oh-JPl" secondAttribute="trailing" constant="8" id="h2n-Ni-XgD"/>
                             <constraint firstItem="qUg-ru-t1C" firstAttribute="top" secondItem="i0j-WC-Cvz" secondAttribute="bottom" id="iKS-7l-hgu"/>
+                            <constraint firstItem="s0J-oh-JPl" firstAttribute="centerX" secondItem="wsu-a9-W7w" secondAttribute="centerX" id="lRw-N0-gRS"/>
                             <constraint firstAttribute="trailing" secondItem="wsu-a9-W7w" secondAttribute="trailing" id="zbB-ae-4la"/>
                         </constraints>
                     </view>
@@ -144,12 +160,13 @@
                     <connections>
                         <outlet property="addressLabel" destination="i0j-WC-Cvz" id="siJ-vX-9SW"/>
                         <outlet property="mapView" destination="wsu-a9-W7w" id="l5s-va-JdT"/>
+                        <outlet property="transportationDirectionsSegment" destination="s0J-oh-JPl" id="GLT-Sk-RxN"/>
                         <segue destination="CXo-ya-thy" kind="presentation" identifier="ModalLoginSegue" id="9Y2-aW-JE6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hO8-7a-MKg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1122" y="143"/>
+            <point key="canvasLocation" x="1120.8" y="142.57871064467767"/>
         </scene>
         <!--Bathroom Added Table View Controller-->
         <scene sceneID="7d9-FW-Sce">
