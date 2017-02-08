@@ -257,7 +257,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
        {
             let navigationController = segue.destination as! UINavigationController
             let controller = navigationController.topViewController as! BathroomAddedTableViewController
-        controller.bathroomLocationInfo = ["latitude": "\(currentLocation!.coordinate.latitude)", "longitude": "\(currentLocation!.coordinate.longitude)","address": addressLabel.text!]
+        
+        
+        let info: [String: AnyObject] = [
+            "latitude": currentLocation!.coordinate.latitude as AnyObject,
+            "longitude": currentLocation!.coordinate.longitude as AnyObject,
+            "address": addressLabel.text! as AnyObject
+        ]
+        
+        controller.bathroomLocationInfo = info
         }
    }
 

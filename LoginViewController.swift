@@ -98,7 +98,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate
         }
         else
         {
-            displayAlert(withTitle: "Error", andMessage: "Password is invalid", OKhandler: {
+            displayAlert(withTitle: "Error", andMessage: "Password is invalid", OKhandler:
+            {
                 //HNS - when user pressed OK on Alert Controller, it will wipe it clean.
                 self.corePasswordTextField.text = ""
             })
@@ -125,7 +126,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate
 //MARK: Alert Message - login and password http://swiftdeveloperblog.com/email-address-validation-in-swift/
     
     
-//MARK: Private Function - is user signed in
+//MARK: Private Function - Signed in
     
     
     fileprivate func userSignedIn()
@@ -138,7 +139,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate
 
     func setupSignInButton()
     {
-        guard let button = signInButton else {
+        guard let button = signInButton else
+        {
             return
         }
         button.backgroundColor = UIColor.white

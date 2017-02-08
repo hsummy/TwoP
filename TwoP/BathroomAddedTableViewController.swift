@@ -82,7 +82,6 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBOutlet weak var bathroomTypeSegmentButton: UISegmentedControl!
     @IBOutlet weak var handicapAccessSegmentButton: UISegmentedControl!
     
-    
     @IBOutlet weak var mondayButton: UIButton!
     @IBOutlet weak var tuesdayButton: UIButton!
     @IBOutlet weak var wednesdayButton: UIButton!
@@ -90,6 +89,8 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBOutlet weak var fridayButton: UIButton!
     @IBOutlet weak var saturdayButton: UIButton!
     @IBOutlet weak var sundayButton: UIButton!
+    
+    
     @IBOutlet weak var openingHourTextField: UILabel!
     @IBOutlet weak var openingHourTimePicker: UIDatePicker!
     @IBOutlet weak var closingHourTextField: UILabel!
@@ -111,8 +112,8 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
     var datePickerHidden = false
     
-    var bathroomLocationInfo = [String: String]()
-    var bathrooms = [Bathroom]()
+    var bathroomLocationInfo = [String: AnyObject]()
+    //var bathrooms = [Bathroom]()
     
     /* - ?????for days of the week buttons?
      let calendar = NSCalendar.currentCalendar()
@@ -128,6 +129,15 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         toggleDatePicker()
         bathroomDescriptionText.delegate = self
         extraNotesText.delegate = self
+        mondayButton.layer.cornerRadius = 4
+        tuesdayButton.layer.cornerRadius = 4
+        wednesdayButton.layer.cornerRadius = 4
+        thursdayButton.layer.cornerRadius = 4
+        fridayButton.layer.cornerRadius = 4
+        saturdayButton.layer.cornerRadius = 4
+        sundayButton.layer.cornerRadius = 4
+        
+        
 
         
     }
@@ -135,9 +145,11 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        bathroomAddressDetail.text = bathroomLocationInfo["address"]
-        latitudeDetail.text = bathroomLocationInfo["latitude"]
-        longitudeDetail.text = bathroomLocationInfo["longitude"]
+        bathroomAddressDetail.text = bathroomLocationInfo["address"] as? String
+        let latitude = bathroomLocationInfo["latitude"] as! Double
+        let longitude = bathroomLocationInfo["longitude"] as! Double
+        latitudeDetail.text = String(format: "%.4f", latitude)
+        longitudeDetail.text = String(format: "%.4f", longitude)
         dateAddedLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .none)
     }
     
@@ -193,9 +205,9 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         aBathroom.urinalCount = Int16(urinalStepper.stepValue)
         aBathroom.changingTable = changingTableSwitchButton.isOn
         aBathroom.extraNotes = extraNotesText?.text
-        aBathroom.bathroomAddress = bathroomLocationInfo["address"]
-        aBathroom.latitude = Double(bathroomLocationInfo["latitude"]!)!
-        aBathroom.longitude = Double(bathroomLocationInfo["longitude"]!)!
+        aBathroom.bathroomAddress = bathroomLocationInfo["address"] as! String?
+        aBathroom.latitude = bathroomLocationInfo["latitude"] as! Double
+        aBathroom.longitude = bathroomLocationInfo["longitude"] as! Double
         //aBathroom.placemark = do not need since using lat and long.
         
         do{
@@ -249,7 +261,6 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         tableView.beginUpdates()
         tableView.endUpdates()
     }
-    
     
    
 //MARK: IBActions - Bar Buttons
@@ -312,7 +323,7 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBAction func daysOfWeekButtons(_ sender: UIButton)
     {
         
-        
+        sender.isSelected = !sender.isSelected
     }
     
  //MARK: IBActions - BONUS
