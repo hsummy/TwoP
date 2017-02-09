@@ -26,13 +26,13 @@ extension Bathroom: MKAnnotation
         switch gender
         {
         case 0:
-            return "Female"
+            return "Female only"
         case 1:
-            return "Male"
+            return "Male only"
         case 2:
             return "Female/Male"
         case 3:
-            return "All"
+            return "Gender Neutral"
         default:
             return ""
         }
@@ -42,11 +42,11 @@ extension Bathroom: MKAnnotation
         switch bathroomType
         {
         case 0:
-            return "Public"
+            return "Bathroom Type: Public"
         case 1:
-            return "Portalet"
+            return "Bathroom Type: Portalet"
         case 2:
-            return "Customers Only"
+            return "Bathroom TypeCustomers Only"
         case 3:
             return "Employees Only"
         default:
@@ -214,7 +214,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         {
             return nil
         }
-        let identifier = "2Pi"
+        let identifier = "2P"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
         
         if annotationView == nil
@@ -229,10 +229,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             rightButton.setTitle("GO", for: .normal)
             annotationBathroomLocationView.rightCalloutAccessoryView = rightButton
             annotationView = annotationBathroomLocationView
-            
-            
-            
-            
         }else{
             annotationView?.annotation = annotation
         }
@@ -241,12 +237,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         return annotationView
     }
-    //HNS - !!!come back to this for the call out. i button
+    
+/*    //HNS - !!!come back to this for the call out. i button
     func showBathroomLocationDetails(sender: UIButton)
     {
         performSegue(withIdentifier: "2Pi", sender: sender)
     }
-    
+ */
     
 //MARK: Map Overlay - directions to X using ploylines
     //!!!HNS - https://makeapppie.com/2016/05/16/adding-annotations-and-overlays-to-maps/ - need to finish the 'directions' to the bathroom with black line.
@@ -262,13 +259,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     //HNS - line from user to bathroom selected.
     private func mapView(_ mapView: MKMapView, rendererfor overlay: MKOverlay) -> MKOverlayRenderer
-    {   /*
-            let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor(hue: 185/360, saturation: 54/100, brightness: 65/100, alpha: 1.0)
-            polylineRenderer.lineWidth = 2
-            return polylineRenderer
-            */
-        
+    {
         if overlay is MKPolyline
         {
         let polylineRenderer = MKPolylineRenderer(overlay: overlay)
@@ -278,6 +269,39 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         return overlay as! MKOverlayRenderer
     }
+    
+    func addRoute()
+    {
+        mapView.deselectAnnotation(selectedAnnotationView.annotation, animated: true)
+        let track = Track.GetAll()// to get list of coordinates you should write your own way to store
+        if track.count == 0 {
+            return
+        }
+        var pointsToUse: [CLLocationCoordinate2D] = []
+        
+        var isTrackChanged = false
+        
+        for i in 0...track.count-1 {
+            let x = CLLocationDegrees((track[i].Latitude as NSString).doubleValue)
+            let y = CLLocationDegrees((track[i].Longitude as NSString).doubleValue)
+            pointsToUse += [CLLocationCoordinate2DMake(x, y)]
+            if i > 0 {
+                if pointsToUse[i-1].latitude != pointsToUse[i].latitude || pointsToUse[i-1].longitude != pointsToUse[i].longitude  {
+                    isTrackChanged = true
+                }
+            }
+        }
+        
+        let myPolyline = MKGeodesicPolyline(coordinates: &pointsToUse, count: track.count)
+        mapView.addOverlay(myPolyline)     
+    }
+    
+    
+    
+    
+    
+    
+    
     
     //HNS - bathroom address info on MapView and sending to BathroomAddedTVC
    override func prepare(for segue: UIStoryboardSegue, sender: Any?)

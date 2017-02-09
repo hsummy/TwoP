@@ -194,15 +194,14 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(click here to insert Tagged Date) !!make this current date default" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0E-Ew-24N">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0E-Ew-24N">
                                                     <rect key="frame" x="70" y="10" width="300" height="50"/>
-                                                    <color key="backgroundColor" red="0.95994192359999997" green="0.86367076639999996" blue="0.43732070919999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="ctl-DH-8Vx"/>
                                                         <constraint firstAttribute="width" constant="300" id="udx-Vg-uKV"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="20"/>
+                                                    <color key="textColor" red="0.43824452159999999" green="0.30691334609999998" blue="0.1823078394" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -252,7 +251,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="click here to add in general description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="flJ-hb-VVX">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="click here to add general description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="flJ-hb-VVX">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -355,14 +354,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <segmentedControl opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aHI-Ub-Aua">
-                                                    <rect key="frame" x="5" y="5" width="365" height="35"/>
+                                                <segmentedControl opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aHI-Ub-Aua">
+                                                    <rect key="frame" x="5" y="5" width="365" height="34.5"/>
                                                     <color key="backgroundColor" red="0.95994192359999997" green="0.86367076639999996" blue="0.43732070919999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <segments>
-                                                        <segment title="Female"/>
-                                                        <segment title="Male"/>
+                                                        <segment title="Female only    "/>
+                                                        <segment title="Male only      "/>
                                                         <segment title="Female/Male"/>
-                                                        <segment title="ALL"/>
+                                                        <segment title="Gender Neutral"/>
                                                     </segments>
                                                     <color key="tintColor" red="0.43824452159999999" green="0.30691334609999998" blue="0.1823078394" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
@@ -578,20 +577,21 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Opening Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cmk-Ng-Yxh">
-                                                    <rect key="frame" x="120" y="14" width="135" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="135" id="ZBD-OA-Yp5"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Open Time:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mCZ-t8-JX1">
+                                                    <rect key="frame" x="21" y="0.0" width="98" height="36"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Opening Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cmk-Ng-Yxh">
+                                                    <rect key="frame" x="120" y="13" width="247" height="24"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="20"/>
+                                                    <color key="textColor" red="0.43824452159999999" green="0.30691334609999998" blue="0.1823078394" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Cmk-Ng-Yxh" firstAttribute="centerX" secondItem="fGh-3D-wog" secondAttribute="centerX" id="a0Y-Ka-TtG"/>
-                                                <constraint firstItem="Cmk-Ng-Yxh" firstAttribute="centerY" secondItem="fGh-3D-wog" secondAttribute="centerY" id="jW7-sX-WmB"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="opentingTimePickerRow" rowHeight="216" id="S9E-Z0-nZc" userLabel="openingTimePickerRow">
@@ -606,6 +606,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="507853775.553303">
                                                         <!--2017-02-03 22:29:35 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="didChangeOpenTimeAdded:" destination="Lgn-bB-Qeo" eventType="valueChanged" id="dLt-iU-EBT"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -623,20 +626,21 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Closing Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsI-yi-LFw">
-                                                    <rect key="frame" x="120" y="15" width="135" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="135" id="D6q-mf-bUz"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Closed Time:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cxx-Bo-B6N">
+                                                    <rect key="frame" x="15" y="8" width="103" height="26"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Closing Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsI-yi-LFw">
+                                                    <rect key="frame" x="120" y="13.5" width="135" height="24"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="20"/>
+                                                    <color key="textColor" red="0.43824452159999999" green="0.30691334609999998" blue="0.1823078394" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="tsI-yi-LFw" firstAttribute="centerX" secondItem="VmW-Wd-IIq" secondAttribute="centerX" id="6fh-Mj-x3K"/>
-                                                <constraint firstItem="tsI-yi-LFw" firstAttribute="centerY" secondItem="VmW-Wd-IIq" secondAttribute="centerY" id="9k5-NY-wbM"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="closingTimePickerRow" rowHeight="216" id="caG-Nr-tWm" userLabel="closingTimePickerRow">
@@ -651,6 +655,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="507853778.36372399">
                                                         <!--2017-02-03 22:29:38 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="didChangeCloseTimeAdded:" destination="Lgn-bB-Qeo" eventType="valueChanged" id="cal-WL-sVK"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
