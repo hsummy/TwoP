@@ -11,13 +11,6 @@ import MapKit
 import CoreLocation
 import CoreData
 
-enum TransportationType: Int
-{
-    case Walk
-    case Bike
-    case Car
-    
-}
 
 extension Bathroom: MKAnnotation
 {
@@ -42,13 +35,13 @@ extension Bathroom: MKAnnotation
         switch bathroomType
         {
         case 0:
-            return "Bathroom Type: Public"
+            return "Public"
         case 1:
-            return "Bathroom Type: Portalet"
+            return "Portalet"
         case 2:
-            return "Bathroom TypeCustomers Only"
+            return "For Customers Only"
         case 3:
-            return "Employees Only"
+            return "For Employees Only"
         default:
             return ""
         }
@@ -64,11 +57,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var transportationDirectionsSegment: UISegmentedControl!
+
     
     var locationManager = CLLocationManager()
-    var currentLocation: CLLocation?
+    
+    //check out CLLocation config. suspect it is somewhere in using 'currentLocation'
+    var currentLocation: CLLocation? 
     var allBathrooms = [Bathroom]()
+    var userLocation: MKPointAnnotation?
     
     override func viewDidLoad()
     {
@@ -76,9 +72,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         //HNS - best accuracy for user, need permission from user when app in use, and when user is going to bathroom, update. See function below.
         configureLocationManager()
-        bathroomDirections()
         
-}//end of viewDidLoad
+        
+    }//end of viewDidLoad
     
         
 //MARK: ModalLoginSegue for LoginViewController to dismiss upon login.
@@ -106,10 +102,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
        // mapView?.delegate = self
        // mapView?.addAnnotations(Bathroom)
-        
-      //  let overlays = Bathroom.map
-    //fetch bathrooms from coredata. create function first then call it in this area. the function will include the bathroom objects and turn them into my X's
-        
     }
 
 
@@ -121,7 +113,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let status = CLLocationManager.authorizationStatus()
         if status != .denied && status != .restricted
         {
-           locationManager = CLLocationManager()
+           //locationManager = CLLocationManager()
            locationManager.delegate = self
            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             if status == .notDetermined
@@ -139,7 +131,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     {
         if status == .authorizedWhenInUse
         {
-            locationManager.startUpdatingLocation()
+            //locationManager.startUpdatingLocation()
+            locationManager.requestLocation()
         }
         else
         {
@@ -182,30 +175,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 {
                     if place.location != nil
                     {
-                    self.addressLabel.text = "\(place.name!) \n \(place.subThoroughfare!) \(place.thoroughfare!) \n \(place.locality!), \(place.administrativeArea!).  \(place.postalCode!)"
+                    self.addressLabel.text = "\(place.name!) \n \(place.subThoroughfare!) \(place.thoroughfare!) \n \(place.locality!), \(place.administrativeArea!)  \(place.postalCode!)"
                     }
                 }
             }
         }
-
-        
-        //HNS - add annotation to the popup on the map with information ---------need to add from my custompinannotation class when i am done.
-        //pinAnnotation = CustomPin()
-        //pinAnnotation.pinCustomImageName = "x"
-        
-        
-       
-       
-       // HNS - annotation.subtitle = "(put in OPEN - 2PNOW = based on MFE, Public, hours)"
+       // HNS - version 2 - annotation.subtitle = "(put in OPEN - 2PNOW = based on MFE, Public, hours)"
         //pinAnnotationView = MKPinAnnotationView(annotation: pinAnnotation as! MKAnnotation?, reuseIdentifier: "pin")
        // mapView.addAnnotation(pinAnnotationView.annotation!)
     
     }
-
-    //HNS - Callout - customized http://sweettutos.com/2016/01/21/swift-mapkit-tutorial-series-how-to-customize-the-map-annotations-callout-request-a-transit-eta-and-launch-the-transit-directions-to-your-destination/
-
     
-//MARK: - Callout
+    
+//MARK: - Callout - customized
     //HNS - Customized Pin
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?
     {
@@ -224,40 +206,57 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             annotationBathroomLocationView.canShowCallout = true
             annotationBathroomLocationView.image = UIImage(named: "x")
             
-            let rightButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
-            //rightButton.addTarget(mapView, action: #selector(getDirections), for: .touchUpInside)
-            rightButton.setTitle("GO", for: .normal)
-            annotationBathroomLocationView.rightCalloutAccessoryView = rightButton
+            let leftButton = UIButton(frame: CGRect(x: 0, y: 0, width: 80, height: 20))
+            leftButton.backgroundColor = UIColor(hue: 49/360, saturation: 54/100, brightness: 96/100, alpha: 1.0)
+            leftButton.setTitleColor(UIColor.black, for: .normal)
+            leftButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Semibold", size: 10.0)
+            //leftButton.addTarget(mapView, action: #selector(getter: userLocation), for: .touchUpInside)
+            //leftButton.addTarget(mapView, action: #selector(getDirections), for: .touchUpInside)
+            leftButton.setTitle("2P NOW!", for: .normal)
+            leftButton.layer.cornerRadius = 4
+            annotationBathroomLocationView.rightCalloutAccessoryView = leftButton
             annotationView = annotationBathroomLocationView
         }else{
             annotationView?.annotation = annotation
         }
-        
+        //HNS- version 2
        // configureBathroomDetailAnnotationView(annotationView: annotationView!)
         
         return annotationView
     }
+ 
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl)
+    {
+        if let user = userLocation, let destination = view.annotation
+        {
+            let directionsRequest = MKDirectionsRequest()
+            directionsRequest.source = MKMapItem(placemark: MKPlacemark(coordinate: user.coordinate))
+            directionsRequest.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination.coordinate))
+            directionsRequest.requestsAlternateRoutes = false
+            directionsRequest.transportType = .walking
+            
+            let directions = MKDirections(request: directionsRequest)
+            directions.calculate { response, error in
+                guard let unwrappedResponse = response else { return }
+                for route in unwrappedResponse.routes
+                {
+                    self.mapView.add(route.polyline)
+                    self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+                }
+            }
+        }
+    }
     
-/*    //HNS - !!!come back to this for the call out. i button
+/*    //HNS - version 2 - come back to this for the call out. i button
     func showBathroomLocationDetails(sender: UIButton)
     {
         performSegue(withIdentifier: "2Pi", sender: sender)
     }
  */
     
-//MARK: Map Overlay - directions to X using ploylines
-    //!!!HNS - https://makeapppie.com/2016/05/16/adding-annotations-and-overlays-to-maps/ - need to finish the 'directions' to the bathroom with black line.
-    
-    func bathroomDirections()
-    {
-        var coordinates = [CLLocationCoordinate2D]()
-        //coordinates += [ChicagoCenterCoordinate().coordinate] //State and Washington
-        //coordinates += CLLocationCoordinate2D(latitude:  , longitude: -81.37760925292969)]
-        //coordinates += [restaurants[10].coordinate] //Uno's
-        let path = MKPolyline(coordinates: &coordinates, count: coordinates.count)
-        mapView.add(path)
-    }
+//MARK: Map Ployline - directions from user to X
     //HNS - line from user to bathroom selected.
+    
     private func mapView(_ mapView: MKMapView, rendererfor overlay: MKOverlay) -> MKOverlayRenderer
     {
         if overlay is MKPolyline
@@ -269,39 +268,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         return overlay as! MKOverlayRenderer
     }
-    
-    func addRoute()
-    {
-        mapView.deselectAnnotation(selectedAnnotationView.annotation, animated: true)
-        let track = Track.GetAll()// to get list of coordinates you should write your own way to store
-        if track.count == 0 {
-            return
-        }
-        var pointsToUse: [CLLocationCoordinate2D] = []
-        
-        var isTrackChanged = false
-        
-        for i in 0...track.count-1 {
-            let x = CLLocationDegrees((track[i].Latitude as NSString).doubleValue)
-            let y = CLLocationDegrees((track[i].Longitude as NSString).doubleValue)
-            pointsToUse += [CLLocationCoordinate2DMake(x, y)]
-            if i > 0 {
-                if pointsToUse[i-1].latitude != pointsToUse[i].latitude || pointsToUse[i-1].longitude != pointsToUse[i].longitude  {
-                    isTrackChanged = true
-                }
-            }
-        }
-        
-        let myPolyline = MKGeodesicPolyline(coordinates: &pointsToUse, count: track.count)
-        mapView.addOverlay(myPolyline)     
-    }
-    
-    
-    
-    
-    
-    
-    
     
     //HNS - bathroom address info on MapView and sending to BathroomAddedTVC
    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -321,7 +287,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         controller.bathroomLocationInfo = info
         }
    }
-   /*
+   /* HNS- customize callout - version 2
     func configureBathroomAnnotationView (annotationView: MKAnnotationView)
     {
         let bathroomLabelAnnotation = annotation as! MKUserLocation
@@ -349,44 +315,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         annotationView.rightCalloutAccessoryView = rightButton
         return annotationView
     }
- */
-   /*
-    func getDirections(_ sender: UIButton)
-    {
-    currentLocation
-    }
-    */
-//MARK: IBActions
-    
-  /*
-    @IBAction func transportationDirectionsSegmentButtons(_ sender: UISegmentedControl)
-    {
-        let transportationType = MKDirectionsRequest(rawValue: transportationDirectionsSegment.selectedSegmentIndex)
-        switch (transportationType!) {
-        case .Walk:
-            MKDirections.transportationType = .Walk
-        case .Bike:
-            .transportationType = TransportationType.Bike
-        case .Car:
-            .transportationType = TransportationType.Car
-        }
-    }
-       */
-        /*override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-        {
-            if segue.identifier == "TagBathroomSegue"
-            {
-                let navigationController = segue.destination as! UINavigationController
-                let controller = navigationController.topViewController as! BathroomAddedTableViewController
-                
-                controller.coordinate = location!.coordinate
-                controller.placemark = placemark
-                controller.managedObjectContext = managedObjectContext
-            }
-        }
- 
-    }
-    */
-    
+
+*/
 
 }//end of MapViewerController class
