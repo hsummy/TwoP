@@ -46,18 +46,16 @@ enum Row: Int
             row = Row.dateAddedRow
         case (0,1):
             row = Row.dateAddedPickerRow
-        case (5,1):
+        case (4,1):
             row = Row.openingTimeRow
-        case (5,2):
+        case (4,2):
             row = Row.openingTimePickerRow
-        case (5,3):
+        case (4,3):
             row = Row.closingTimeRow
-        case (5,4):
+        case (4,4):
             row = Row.closingTimePickerRow
         default: break
         }
-
-        
         self = row
     }
 }
@@ -65,8 +63,6 @@ enum Row: Int
 
 class BathroomAddedTableViewController: UITableViewController, UITextFieldDelegate, CLLocationManagerDelegate {
 
-    
-    
     @IBOutlet weak var dateAddedLabel: UILabel!
     @IBOutlet weak var dateAddedPicker: UIDatePicker!
     
@@ -82,7 +78,6 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBOutlet weak var bathroomTypeSegmentButton: UISegmentedControl!
     @IBOutlet weak var handicapAccessSegmentButton: UISegmentedControl!
     
-    
     @IBOutlet weak var mondayButton: UIButton!
     @IBOutlet weak var tuesdayButton: UIButton!
     @IBOutlet weak var wednesdayButton: UIButton!
@@ -90,6 +85,8 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBOutlet weak var fridayButton: UIButton!
     @IBOutlet weak var saturdayButton: UIButton!
     @IBOutlet weak var sundayButton: UIButton!
+    
+    
     @IBOutlet weak var openingHourTextField: UILabel!
     @IBOutlet weak var openingHourTimePicker: UIDatePicker!
     @IBOutlet weak var closingHourTextField: UILabel!
@@ -109,37 +106,41 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     @IBOutlet weak var latitudeDetail: UILabel!
     @IBOutlet weak var longitudeDetail: UILabel!
     
-    var datePickerHidden = false
+    var datePickerHidden = true
+    var openTimePickerHidden = true
+    var closeTimePickerHidden = true
     
-    var bathroomLocationInfo = [String: String]()
-    var bathrooms = [Bathroom]()
+    var bathroomLocationInfo = [String: AnyObject]()
+    //var bathrooms = [Bathroom]()
     
-    /* - ?????for days of the week buttons?
-     let calendar = NSCalendar.currentCalendar()
-     let date = NSDate()
-     let dateComponent =  calendar.components(NSCalendarUnit.CalendarUnitWeekday, fromDate: date)
-     let weekday = dateComponent.weekday
-     */
- 
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
         toggleDatePicker()
-        
-
-        
+        bathroomDescriptionText.delegate = self
+        extraNotesText.delegate = self
+        mondayButton.layer.cornerRadius = 4
+        tuesdayButton.layer.cornerRadius = 4
+        wednesdayButton.layer.cornerRadius = 4
+        thursdayButton.layer.cornerRadius = 4
+        fridayButton.layer.cornerRadius = 4
+        saturdayButton.layer.cornerRadius = 4
+        sundayButton.layer.cornerRadius = 4
     }
     
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        bathroomAddressDetail.text = bathroomLocationInfo["address"]
-        latitudeDetail.text = bathroomLocationInfo["latitude"]
-        longitudeDetail.text = bathroomLocationInfo["longitude"]
+        bathroomAddressDetail.text = bathroomLocationInfo["address"] as? String
+        let latitude = bathroomLocationInfo["latitude"] as! Double
+        let longitude = bathroomLocationInfo["longitude"] as! Double
+        latitudeDetail.text = String(format: "%.4f", latitude)
+        longitudeDetail.text = String(format: "%.4f", longitude)
+        dateAddedLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .none)
+        openingHourTextField.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+        closingHourTextField.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
     }
-    
-
 
     override func didReceiveMemoryWarning()
     {
@@ -191,9 +192,9 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         aBathroom.urinalCount = Int16(urinalStepper.stepValue)
         aBathroom.changingTable = changingTableSwitchButton.isOn
         aBathroom.extraNotes = extraNotesText?.text
-        aBathroom.bathroomAddress = bathroomLocationInfo["address"]
-        aBathroom.latitude = Double(bathroomLocationInfo["latitude"]!)!
-        aBathroom.longitude = Double(bathroomLocationInfo["longitude"]!)!
+        aBathroom.bathroomAddress = bathroomLocationInfo["address"] as! String?
+        aBathroom.latitude = bathroomLocationInfo["latitude"] as! Double
+        aBathroom.longitude = bathroomLocationInfo["longitude"] as! Double
         //aBathroom.placemark = do not need since using lat and long.
         
         do{
@@ -218,6 +219,15 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         {
             toggleDatePicker()
         }
+        if row == .openingTimeRow
+        {
+            toggleOpenTimePicker()
+        }
+        if row == .closingTimeRow
+        {
+            toggleCloseTimePicker()
+        }
+        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
@@ -228,6 +238,24 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         {
         case .dateAddedPickerRow:
             if datePickerHidden
+            {
+                return 0
+            }
+            else
+            {
+                return super.tableView(tableView, heightForRowAt: indexPath)
+            }
+        case .openingTimePickerRow:
+            if openTimePickerHidden
+            {
+                return 0
+            }
+            else
+            {
+                return super.tableView(tableView, heightForRowAt: indexPath)
+            }
+        case .closingTimePickerRow:
+            if closeTimePickerHidden
             {
                 return 0
             }
@@ -248,6 +276,23 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
         tableView.endUpdates()
     }
     
+    func toggleOpenTimePicker()
+    {
+        openTimePickerHidden = !openTimePickerHidden
+        
+        //HNS - Forces tableview to update itself
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func toggleCloseTimePicker()
+    {
+        closeTimePickerHidden = !closeTimePickerHidden
+        
+        //HNS - Forces tableview to update itself
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
     
    
 //MARK: IBActions - Bar Buttons
@@ -259,7 +304,7 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem)
     {
-        //HNS !!!!!Need to add 'place pin X' when saved.
+        
         saveBathroomToCoreData()
         dismiss(animated: true, completion: nil)
         
@@ -269,10 +314,19 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
     @IBAction func didChangeDateAdded(_ sender: UIDatePicker)
     {//convert this dateinto a string.
-        dateAddedLabel.text = DateFormatter.localizedString(from: dateAddedPicker.date, dateStyle: .short, timeStyle: .short)
+        dateAddedLabel.text = DateFormatter.localizedString(from: dateAddedPicker.date, dateStyle: .short, timeStyle: .none)
+    }
+    
+    @IBAction func didChangeOpenTimeAdded(_ sender: UIDatePicker)
+    {
+        openingHourTextField.text = DateFormatter.localizedString(from: openingHourTimePicker.date, dateStyle: .none, timeStyle: .short)
+    }
+    
+    @IBAction func didChangeCloseTimeAdded(_ sender: UIDatePicker)
+    {
+        closingHourTextField.text = DateFormatter.localizedString(from: closingHourTimePicker.date, dateStyle: .none, timeStyle: .short)
         
     }
-
 //MARK: IBActions - How was it...
     
     @IBAction func flushRatingSegmentButton(_ sender: UISegmentedControl)
@@ -306,19 +360,29 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     {
         
     }
+//MARK: IBActions - When can...
+    @IBAction func daysOfWeekButtons(_ sender: UIButton)
+    {
+        
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected
+        {
+            sender.backgroundColor = UIColor(hue: 29/360, saturation: 58/100, brightness: 44/100, alpha: 1.0)
+        }
+        else
+        {
+            sender.backgroundColor = UIColor(hue: 49/360, saturation: 54/100, brightness: 96/100, alpha: 1.0)
+        }
+    }
     
  //MARK: IBActions - BONUS
     @IBAction func stallStepperValueChanged(_ sender: UIStepper)
     {
         _ = sender.superview
-        
         let countAsInt = Int16(sender.value)
         stallCountAmtLabel.text = "\(countAsInt)"
-        
-
     }
     
-
     @IBAction func urinalStepperValueChanged(_ sender: UIStepper)
     {
         _ = sender.superview
@@ -338,8 +402,6 @@ class BathroomAddedTableViewController: UITableViewController, UITextFieldDelega
     
 
 //MARK: IBActions - Notes
-    
-    
     @IBAction func extraNotes(_ sender: UITextField)
     {
         dismiss(animated: true, completion: nil)

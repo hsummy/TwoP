@@ -55,36 +55,9 @@ class BathroomDetailTableViewController: UITableViewController
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-      //if section == 0
-     // {
-     //       return bathroomDescription.count
-     // }
-     //   else if section == 1
-     // {
-     //       return
-     // }
+
         return 0
     }
-    
-   
-    
-    
-    
-    
-    
-    
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    
     //HNS - not allowing the user to Edit (false) the Read Only items at this time.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     
