@@ -79,10 +79,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate
         else if textField == corePasswordTextField
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             let rc = validatePasswordTextField()
             signInButtonTapped(nil)
             return rc
         
+=======
+            return validatePasswordTextField()
+>>>>>>> hsummy/master
 =======
             return validatePasswordTextField()
 >>>>>>> hsummy/master
