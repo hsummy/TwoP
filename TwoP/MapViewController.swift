@@ -64,7 +64,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //check out CLLocation config. suspect it is somewhere in using 'currentLocation'
     var currentLocation: CLLocation? 
     var allBathrooms = [Bathroom]()
-    var userLocation: MKPointAnnotation?
+    var userLocation: MKUserLocation?
     
     override func viewDidLoad()
     {
@@ -188,6 +188,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     
 //MARK: - Callout - customized
+    
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        self.userLocation = userLocation
+    }
     //HNS - Customized Pin
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?
     {
