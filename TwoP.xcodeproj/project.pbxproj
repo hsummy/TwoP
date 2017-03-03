@@ -15,7 +15,6 @@
 		E3325DAA1E3D396100077C3D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FD32B11E36A6030039CD1F /* LoginViewController.swift */; };
 		E3325DBB1E3FFDB500077C3D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3325DBA1E3FFDB500077C3D /* CoreDataManager.swift */; };
 		E3FD329D1E36A4660039CD1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FD329C1E36A4660039CD1F /* AppDelegate.swift */; };
-		E3FD32A21E36A4660039CD1F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3FD32A01E36A4660039CD1F /* Main.storyboard */; };
 		E3FD32A51E36A4660039CD1F /* TwoP.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E3FD32A31E36A4660039CD1F /* TwoP.xcdatamodeld */; };
 		E3FD32A71E36A4660039CD1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3FD32A61E36A4660039CD1F /* Assets.xcassets */; };
 		E3FD32AA1E36A4660039CD1F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3FD32A81E36A4660039CD1F /* LaunchScreen.storyboard */; };
@@ -31,7 +30,6 @@
 		E3325DBA1E3FFDB500077C3D /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		E3FD32991E36A4660039CD1F /* TwoP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3FD329C1E36A4660039CD1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E3FD32A11E36A4660039CD1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E3FD32A41E36A4660039CD1F /* TwoP.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TwoP.xcdatamodel; sourceTree = "<group>"; };
 		E3FD32A61E36A4660039CD1F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E3FD32A91E36A4660039CD1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -110,7 +108,6 @@
 				E3FD32A81E36A4660039CD1F /* LaunchScreen.storyboard */,
 				E3FD329C1E36A4660039CD1F /* AppDelegate.swift */,
 				E30170401E393D66006982CD /* AppState.swift */,
-				E3FD32A01E36A4660039CD1F /* Main.storyboard */,
 				E3325DBA1E3FFDB500077C3D /* CoreDataManager.swift */,
 				E3325DB21E3F8A5500077C3D /* Login */,
 				E3325DB11E3F8A2A00077C3D /* Map */,
@@ -189,7 +186,6 @@
 			files = (
 				E3FD32AA1E36A4660039CD1F /* LaunchScreen.storyboard in Resources */,
 				E3FD32A71E36A4660039CD1F /* Assets.xcassets in Resources */,
-				E3FD32A21E36A4660039CD1F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,14 +210,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		E3FD32A01E36A4660039CD1F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E3FD32A11E36A4660039CD1F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		E3FD32A81E36A4660039CD1F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
